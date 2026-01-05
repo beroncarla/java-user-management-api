@@ -1,6 +1,11 @@
 package com.example.usermanagement.service;
 
+import com.example.usermanagement.model.User;
+import com.example.usermanagement.repository.UserRepository;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
 
 /**
  * Capa de servicio que contiene la lógica de negocio
@@ -9,4 +14,25 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserService {
 
+    //Dependencia interna
+    private UserRepository userRepository;
+
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
+    /**
+     * Devuelve todos los usuarios
+     */
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
+
+    /**
+     * Devuelve un usuario por id
+     * Retorna Optional.empty() si no se encuentra
+     */
+    public Optional<User> getUserById(Long id) {
+        return userRepository.findById(id);
+    }
 }
