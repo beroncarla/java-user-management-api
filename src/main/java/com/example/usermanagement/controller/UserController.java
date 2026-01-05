@@ -42,7 +42,7 @@ public class UserController {
      * POST /api/users
      * Crea un nuevo usuario
      * - 201 Created con el usuario creado
-     * - 400 Bad Request si los datos son invalidos
+     * - 400 Bad Request si los datos son invalidos (@valid)
      */
     @PostMapping
     public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
