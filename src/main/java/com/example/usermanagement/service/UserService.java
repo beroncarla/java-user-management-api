@@ -35,4 +35,15 @@ public class UserService {
     public Optional<User> getUserById(Long id) {
         return userRepository.findById(id);
     }
+
+    /**
+     * Logica de negocio para crear un nuevo usuario
+     */
+    public void createUser(User user) {
+        //validaciones
+        if (user.name() == null || user.email() == null) {
+            throw new IllegalArgumentException("Name and email cannot be null");
+        }
+        userRepository.save(user);
+    }
 }
