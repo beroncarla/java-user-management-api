@@ -41,4 +41,12 @@ public class UserRepository {
                 .filter(user -> user.id().equals(id))
                 .findFirst();
     }
+
+    /**
+     * Guarda un nuevo usuario.
+     * En el mundo real, esto persistiria en la base de datos.
+     */
+    public void save(User user) {
+        this.users.add(user);
+    }
 }
