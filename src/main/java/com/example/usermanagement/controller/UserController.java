@@ -2,12 +2,9 @@ package com.example.usermanagement.controller;
 
 import com.example.usermanagement.model.User;
 import com.example.usermanagement.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.web.bind.annotation.*;
 
 /**
  * User controller
@@ -39,5 +36,17 @@ public class UserController {
         return this.userService.getUserById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
+    }
+
+    /**
+     * POST /api/users
+     * Crea un nuevo usuario
+     * - 201 Created con el usuario creado
+     * - 400 Bad Request si los datos son invalidos
+     */
+    @PostMapping
+    public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
+        User createdUser = this.userService.createUser(user);
+        return ResponseEntity.status(201).body(createdUser); //201 created
     }
 }
