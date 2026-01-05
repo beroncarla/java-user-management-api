@@ -20,9 +20,19 @@ public class UserRepository {
         this.users.add(new User(1L, "Alice", "alice@gmail.com");
         this.users.add(new User(2L, "Bob", "bob@gmail.com");
     }
+
+    /**
+     * Obtiene todos los usuarios.
+     * usado por integraciones tipo GET /users
+     */
     public List<User> findAll() {
-        return users;
+        return this.users;
     }
+
+    /**
+     * Obtiene un usuario por su id.
+     * Devuelve un Optional que puede estar vacio si no se encuentra el usuario.
+     */
     public Optional<User> findById(Long id){
         return this.users.stream()
                 .filter(user -> user.id().equals(id))
