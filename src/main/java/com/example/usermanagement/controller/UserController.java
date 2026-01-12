@@ -67,7 +67,7 @@ public class UserController {
     }
 
     /**
-     * UPDATE /api/users/{id}
+     * PUT /api/users/{id}
      * Actualiza un usuario por su id
      * - 200 OK con el usuario actualizado
      * - 404 Not Found si no se encuentra el usuario
