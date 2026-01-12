@@ -47,4 +47,18 @@ public class UserService {
         userRepository.save(user);
         return user;
     }
+
+    public Optional<User> updateUser(Long id, User updateUser) {
+        return userRepository.findById(id)
+                .map(existingUser -> {
+                            User newUser = new User(
+                                    existingUser.id(),
+                                    updateUser.name(),
+                                    updateUser.email()
+                            );
+                            userRepository.save(newUser);
+                            return newUser;
+                        }
+                );
+    }
 }
