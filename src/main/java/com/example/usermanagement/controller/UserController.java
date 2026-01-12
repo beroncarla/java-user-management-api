@@ -49,4 +49,37 @@ public class UserController {
         User createdUser = this.userService.createUser(user);
         return ResponseEntity.status(201).body(createdUser); //201 created
     }
+
+    /**
+     * DELETE /api/users/{id}
+     * Elimina un usuario por su id
+     * - 204 No Content si se elimina correctamente
+     * - 404 Not Found si no se encuentra el usuario
+     */
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
+        boolean deleted = userService.deleteUser(id);
+        if (deleted) {
+            return ResponseEntity.noContent().build(); //204 No Content
+        } else {
+            return ResponseEntity.notFound().build(); //404 Not Found
+        }
+    }
+
+    /**
+     * UPDATE /api/users/{id}
+     * Actualiza un usuario por su id
+     * - 200 OK con el usuario actualizado
+     * - 404 Not Found si no se encuentra el usuario
+     */
+    @PutMapping("/api/users/{id}")
+    public ResponseEntity<User> updateUser(
+            @PathVariable Long id,
+            @RequestBody User user) {
+
+        return userService.updateUser(id, user)
+                .map(updated -> ResponseEntity.ok(updated))
+                .orElse(ResponseEntity.notFound().build());
+    }
+
 }
