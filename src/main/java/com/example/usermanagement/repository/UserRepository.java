@@ -49,4 +49,11 @@ public class UserRepository {
     public void save(User user) {
         this.users.add(user);
     }
+
+    /**
+     * Elimina un usuario por su id.
+     */
+    public void delete(Long id) {
+        this.users.removeIf(user -> user.id().equals(id));
+    }
 }
