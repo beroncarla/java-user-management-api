@@ -1,6 +1,6 @@
 package com.example.usermanagement.service;
 
-import com.example.usermanagement.model.User;
+import com.example.usermanagement.dto.User;
 import com.example.usermanagement.repository.UserRepository;
 import org.junit.jupiter.api.Test;
 

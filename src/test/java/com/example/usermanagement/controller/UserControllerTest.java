@@ -1,6 +1,6 @@
 package com.example.usermanagement.controller;
 
-import com.example.usermanagement.model.User;
+import com.example.usermanagement.dto.User;
 import com.example.usermanagement.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
