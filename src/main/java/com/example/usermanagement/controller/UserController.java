@@ -1,85 +1,41 @@
 package com.example.usermanagement.controller;
 
 import com.example.usermanagement.dto.User;
+import com.example.usermanagement.model.UserEntity;
 import com.example.usermanagement.service.UserService;
 import jakarta.validation.Valid;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-/**
- * User controller
- * <p>
- * Expone endpoints REST consumibles por sistemas externos (CPI)
- */
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
 
-    private UserService userService;
+    private final UserService userService;
 
-    /**
-     * Constructor con inyeccion de dependencias
-     * Spring automaticamente inyecta el UserService
-     */
+    // Inyección de dependencias por constructor
     public UserController(UserService userService) {
         this.userService = userService;
     }
 
-    /**
-     * GET /api/users{id}
-     * Devuelve un usuario por su id
-     * - 200 OK con el usuario si se encuentra
-     * - 404 Not Found si no se encuentra
-     */
+    // GET /api/users
+    @GetMapping
+    public List<UserEntity> getAllUsers() {
+        return userService.getAllUsers();
+    }
+
+    // GET /api/users/{id}
     @GetMapping("/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable Long id) {
-        return this.userService.getUserById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public UserEntity getUserById(@PathVariable Long id) {
+        return userService.getUserById(id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
     }
 
-    /**
-     * POST /api/users
-     * Crea un nuevo usuario
-     * - 201 Created con el usuario creado
-     * - 400 Bad Request si los datos son invalidos (@valid)
-     */
+    // POST /api/users
     @PostMapping
-    public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
-        User createdUser = this.userService.createUser(user);
-        return ResponseEntity.status(201).body(createdUser); //201 created
+    public UserEntity createUser(@Valid @RequestBody User user) {
+        return userService.createUser(user);
     }
-
-    /**
-     * DELETE /api/users/{id}
-     * Elimina un usuario por su id
-     * - 204 No Content si se elimina correctamente
-     * - 404 Not Found si no se encuentra el usuario
-     */
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
-        boolean deleted = userService.deleteUser(id);
-        if (deleted) {
-            return ResponseEntity.noContent().build(); //204 No Content
-        } else {
-            return ResponseEntity.notFound().build(); //404 Not Found
-        }
-    }
-
-    /**
-     * PUT /api/users/{id}
-     * Actualiza un usuario por su id
-     * - 200 OK con el usuario actualizado
-     * - 404 Not Found si no se encuentra el usuario
-     */
-    @PutMapping("/api/users/{id}")
-    public ResponseEntity<User> updateUser(
-            @PathVariable Long id,
-            @RequestBody User user) {
-
-        return userService.updateUser(id, user)
-                .map(updated -> ResponseEntity.ok(updated))
-                .orElse(ResponseEntity.notFound().build());
-    }
-
 }
+
