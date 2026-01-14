@@ -1,6 +1,7 @@
 package com.example.usermanagement.service;
 
-import com.example.usermanagement.dto.User;
+import com.example.usermanagement.dto.UserRequest;
+import com.example.usermanagement.dto.UserResponse;
 import com.example.usermanagement.model.UserEntity;
 import com.example.usermanagement.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -18,20 +19,37 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public List<UserEntity> getAllUsers() {
-        return userRepository.findAll();
-    }
-
-    public Optional<UserEntity> getUserById(Long id) {
-        return userRepository.findById(id);
-    }
-
-    public UserEntity createUser(User user) {
-        UserEntity entity = new UserEntity(
-                user.name(),
-                user.email()
+    private UserResponse toResponse(UserEntity entity) {
+        return new UserResponse(
+                entity.getId(),
+                entity.getName(),
+                entity.getEmail()
         );
-        return userRepository.save(entity);
+    }
+
+    private UserEntity toEntity(UserRequest dto) {
+        UserEntity entity = new UserEntity();
+        entity.setName(dto.name());
+        entity.setEmail(dto.email());
+        return entity;
+    }
+
+    public List<UserResponse> getAllUsers() {
+        return userRepository.findAll()
+                .stream()
+                .map(this::toResponse)
+                .toList();
+    }
+
+    public Optional<UserResponse> getUserById(Long id) {
+        return userRepository.findById(id)
+                .map(this::toResponse);
+    }
+
+    public UserResponse createUser(UserRequest request) {
+        UserEntity entity = toEntity(request);
+        UserEntity saved = userRepository.save(entity);
+        return toResponse(saved);
     }
 }
 
